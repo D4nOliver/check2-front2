@@ -9,3 +9,4 @@ function validacao(array) {
   });
 }
 export { validacao };
+// arrumar a  importação
