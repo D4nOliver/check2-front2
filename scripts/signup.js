@@ -1,31 +1,76 @@
-import { validacao } from "./utils"
-
-let name = document.getElementById("name")
-let lastName = document.getElementById("lastName")
-let email = document.getElementById("email")
-let password = document.getElementById("password")
-let password2 = document.getElementById("password2")
 let submit = document.getElementById("submit")
 
+let data =[]
 submit.addEventListener("click", (e)=>{
     e.preventDefault()
-    //preventDefault parou de funcionar
-    if(validacao()){
-        name = name.value.trim()
-        lastName = lastname.value.trim()
-        email = email.value.trim()
-        password = password.value.trim()
-        password2 = password2.value.trim()
-        //consegui tratar os dados mas depois de usar a validacao() ainda nao funcionou
-        let signupJs = {
-            "firstName": name,
+    
+    let inputs = document.querySelectorAll("input")
+    console.log(inputs)
+    inputs.forEach((e)=>{
+        data.push(e.value)
+    })
+    
+    let firstName = data[0].trim()
+    let lastName = data[1].trim()
+    let email = data[2].trim()
+    let password = data[3].trim()
+    let password2 = data[4].trim()
+    
+    if(validaSenha(password, password2)){
+        let userData = {
+            "firstName": firstName,
             "lastName": lastName,
             "email": email,
             "password": password
         }
-        
-        let signupJson = JSON.stringify(signupJs)
-        console.log(signupJson)
+        let userDataJson = JSON.stringify(userData)
+        signupApi(userDataJson)
     }
-   
+    else {
+        console.log("senha diferente")
+    }
 })
+
+
+
+function validaSenha(s1,s2){
+    if(s1 === s2){
+        return true
+    }
+    else {
+        return false
+    }
+    
+}
+
+function signupApi(JsonRecebido){
+    let config = {
+        method: "POST",
+        body: JsonRecebido,
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+    
+    fetch("https://ctd-fe2-todo-v2.herokuapp.com/v1/users", config)
+        .then((resultado)=>{
+            return resultado.json()
+        })
+        .then((resultado)=>{
+            signupSucesso()
+        })
+        .catch((erro)=>[
+            signupErro(resposta)
+        ])
+    
+}
+
+function signupSucesso(){
+    location.href = "index.html"
+}
+
+function signupErro(resposta){
+    if(resposta.status == 400){
+        alert("Usuario já esta cadastrado")
+    }
+}
