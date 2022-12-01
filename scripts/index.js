@@ -9,13 +9,12 @@ submit.addEventListener("click", (e) => {
   let emailLogin = email.value.trim();
   let senhaLogin = password.value.trim();
   // add no array login
-  login.push(emailLogin, senhaLogin);
+  login = { email: emailLogin, password: senhaLogin };
   //tranfomando em JSON
   let loginJSON = JSON.stringify(login);
-  //
   logandoApi(loginJSON);
 });
-//tem q arrumar aki, n ta logando
+//logando na API
 function logandoApi(loginJson) {
   let config = {
     method: "POST",
@@ -41,17 +40,23 @@ function logandoApi(loginJson) {
 }
 
 function loginSucesso(resposta) {
-  console.log(resposta);
+  // salvando o token na storage
+  sessionStorage.setItem("jwt", resposta.jwt);
+  // mandando o user para tarefas.html
+  location.href = "tarefas.html";
 }
 function loginErro(resposta) {
-  console.log(resposta);
+  if (resposta.status == 400 || resposta.status == 404) {
+    alert("login inválido: Email e/ou senha desconhecidos");
+  }
 }
+// validando email e senha
 email.addEventListener("keyup", () => {
-  login = [email.value, password.value];
+  let login = [email.value, password.value];
   validacao(login);
 });
 
 password.addEventListener("keyup", () => {
-  login = [email.value, password.value];
+  let login = [email.value, password.value];
   validacao(login);
 });
