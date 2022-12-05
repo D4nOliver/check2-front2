@@ -52,7 +52,7 @@ function signupApi(JsonRecebido){
         },
     };
     
-    fetch("https://ctd-fe2-todo-v2.herokuapp.com/v1/users", config)
+    fetch(`${baseUrl()}/users`, config)
         .then((resultado)=>{
             return resultado.json()
         })

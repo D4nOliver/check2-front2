@@ -23,7 +23,7 @@ function logandoApi(loginJson) {
       "Content-Type": "application/json",
     },
   };
-  fetch("https://ctd-fe2-todo-v2.herokuapp.com/v1/users/login", config)
+  fetch(`${baseUrl()}/users/login`, config)
     .then((resultado) => {
       if (resultado.status == 201) {
         return resultado.json();
