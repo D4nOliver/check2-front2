@@ -3,11 +3,10 @@ function validacao(array) {
     if (e != "") {
       submit.disabled = false;
     } else {
-      //submit.style.backgroundColor = "red";
       submit.disabled = true;
     }
   });
 }
 function baseUrl() {
-  return "http://todo-api.ctd.academy:3000//v1";
+  return "http://todo-api.ctd.academy:3000/v1";
 }

@@ -1,22 +1,25 @@
 let submit = document.getElementById("submit")
-
-let data =[]
+let inputs;
 submit.addEventListener("click", (e)=>{
     e.preventDefault()
     
-    let inputs = document.querySelectorAll("input")
+    inputs = document.querySelectorAll("input")
     console.log(inputs)
-    inputs.forEach((e)=>{
-        data.push(e.value)
-    })
     
-    let firstName = data[0].trim()
-    let lastName = data[1].trim()
-    let email = data[2].trim()
-    let password = data[3].trim()
-    let password2 = data[4].trim()
-    
-    if(validaSenha(password, password2)){
+    let [
+        firstName, 
+        lastName,
+        email,  
+        password, 
+        password2
+    ] = Array.from(inputs).map(e=>e.value.trim())
+      
+
+    let motivoErro = validaSenha(password, password2)
+    if(motivoErro){
+        alert(motivoErro)
+    }
+    else {
         let userData = {
             "firstName": firstName,
             "lastName": lastName,
@@ -25,22 +28,24 @@ submit.addEventListener("click", (e)=>{
         }
         let userDataJson = JSON.stringify(userData)
         signupApi(userDataJson)
-    }
-    else {
-        console.log("senha diferente")
+        console.log(userDataJson)
     }
 })
 
-
-
 function validaSenha(s1,s2){
-    if(s1 === s2){
-        return true
-    }
-    else {
-        return false
-    }
+    console.log(s1 + s2)
+    if(s1 !== s2) 
+        return "Senhas diferentes"
+    if(s1.length < 6) 
+        return "Senha pequena demais!"
+    if(s1.search(/\d/) == -1) 
+        return "Sem numeros"
+    if(s1.search(/[a-zA-Z]/) == -1) 
+        return "Sem letras"
+    if(s1.search(/[!@#$%^&*()_+]/) == -1)
+        return "Sem caractere especial"
     
+    return false  
 }
 
 function signupApi(JsonRecebido){
@@ -59,9 +64,9 @@ function signupApi(JsonRecebido){
         .then((resultado)=>{
             signupSucesso()
         })
-        .catch((erro)=>[
-            signupErro(resposta)
-        ])
+        .catch((erro)=>{
+            signupErro(erro)
+        })
     
 }
 
