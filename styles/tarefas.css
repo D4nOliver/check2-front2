@@ -207,7 +207,7 @@ a {
   margin: 2em 15%;
 }
 
-.tarefas-terminadas i{
+.tarefas-terminadas li{
   color: grey;
   background-color: rgb(228, 228, 228);
 }

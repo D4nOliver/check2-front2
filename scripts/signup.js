@@ -1,9 +1,9 @@
 let submit = document.getElementById("submit")
-let inputs;
+
 submit.addEventListener("click", (e)=>{
     e.preventDefault()
     
-    inputs = document.querySelectorAll("input")
+    let inputs = document.querySelectorAll("input")
     console.log(inputs)
     
     let [
@@ -35,15 +35,15 @@ submit.addEventListener("click", (e)=>{
 function validaSenha(s1,s2){
     console.log(s1 + s2)
     if(s1 !== s2) 
-        return "Senhas diferentes"
+        return "As senhas devem ser iguais"
     if(s1.length < 6) 
-        return "Senha pequena demais!"
+        return "A senha deve conter mais de 6 caracteres"
     if(s1.search(/\d/) == -1) 
-        return "Sem numeros"
+        return "A senha deve conter números"
     if(s1.search(/[a-zA-Z]/) == -1) 
-        return "Sem letras"
+        return "A senha deve conter letras"
     if(s1.search(/[!@#$%^&*()_+]/) == -1)
-        return "Sem caractere especial"
+        return "A senha deve conter pelo menos um caractere especial"
     
     return false  
 }
