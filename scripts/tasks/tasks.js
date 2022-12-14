@@ -68,6 +68,18 @@ function setUsername(userData){
     name.innerText = `${userData.firstName} ${userData.lastName}`
 }
 
+let exitButton = document.getElementById("closeApp")
+
+exitButton.addEventListener("click", ()=>{
+    let exitConfirm = confirm("Deseja encerrar a sessão ?")
+
+    if(exitConfirm){
+        sessionStorage.removeItem("jwt")
+
+        window.location = "index.html"
+    }
+})
+
 let manipulateTasks = (userData) =>{
     userData.map(task =>{
         if(task.completed){
@@ -92,15 +104,19 @@ async function changeTaskStatus(id){
         method: 'PUT',
         body: taskBodyJson,
         headers:
-            {"authorization": jwt}
+            {
+                "authorization": jwt,
+                "Content-Type": "application/json"
+            }
     }
 
     try {
         let request = await fetch(`${baseUrl()}/tasks/${id}`, config)
 
         if(request.status == 200) {
-            let response = request.json()
+            let response = await request.json()
 
+            location.reload()
             console.log(response)
         }
         else{
